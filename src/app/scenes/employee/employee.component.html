@@ -1,0 +1,400 @@
+<div class="employe-wrapper">
+  <div class="employee-table">
+    <section>
+      <!--for demo wrap-->
+      <div>
+        <h1>
+          EMPLOYEE&nbsp;<button
+            class="circle cur-pointer"
+            title="Add Employee"
+            (click)="onClickAddEmployeeButton()"
+          >
+            +
+          </button>
+        </h1>
+      </div>
+
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Full Name</th>
+              <th class="text-center">Employee Code</th>
+              <th class="text-center">Job Title</th>
+              <th class="text-center">Phone Number</th>
+              <th class="text-center">Email ID</th>
+              <th class="text-center">Region</th>
+              <th class="text-center">DOB</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              <td></td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('firstName', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('employeeCode', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('jobTitleName', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('phoneNumber', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('emailAddress', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('region', $event.target.value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="search-input"
+                  #searchInput
+                  (keyup)="onSearch('dob', $event.target.value)"
+                />
+              </td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let item of employeeData">
+              <td>{{ item.id }}</td>
+              <td>{{ item.firstName }} {{ item.lastName }}</td>
+              <td>{{ item.employeeCode }}</td>
+              <td>{{ item.jobTitleName }}</td>
+              <td>{{ item.phoneNumber }}</td>
+              <td>{{ item.emailAddress }}</td>
+              <td>{{ item.region }}</td>
+              <td>{{ item.dob | date: "DD/MM/YYYY" }}</td>
+              <td
+                class="cur-pointer font-size-30-px text-center"
+                title="Details"
+                (click)="showEmployeeDetails(item)"
+              >
+                ...
+              </td>
+            </tr>
+          </tbody>
+          <tfoot *ngIf="employeeData.length == 0">
+            <tr [attr.rowspan]="paginationConfig.itemPerPage">
+              <td colspan="9" class="text-center">
+                <img
+                  src="assets/noSearch.svg"
+                  class="img-fluid w15 pt-5 mt-5 d-block mx-auto"
+                />
+                <div>
+                  <label for="">No Data Found</label>
+                </div>
+                <div>
+                  <button
+                    class="w10 primary-button rounded-pill margin-top-10-px cur-pointer"
+                    title="Clear Search"
+                    (click)="clearSearch()"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="pagination-div">
+        <div class="display-flex">
+          <button
+            class="w45 margin-left-10-pct secondary-button rounded-pill cur-pointer"
+            title="Previous Page"
+            (click)="prev()"
+          >
+            Prev
+          </button>
+          <button
+            class="w45 margin-left-10-pct secondary-button rounded-pill cur-pointer"
+            title="Next Page"
+            (click)="next()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div
+  id="popup popup-create-employee"
+  class="overlay"
+  [ngClass]="{ 'overlay-show': isAddEmployeePopup }"
+>
+  <div class="popup">
+    <h2>Create Employee</h2>
+    <a
+      class="close cur-pointer"
+      title="Close"
+      (click)="isAddEmployeePopup = false"
+      >&times;</a
+    >
+    <div class="content form">
+      <form
+        class="login-form"
+        #employee="ngForm"
+        (ngSubmit)="submitEmployeeData(employee.value)"
+      >
+        <div class="form-user-content">
+          <div class="w50">
+            <label for="">ID</label>
+            <input
+              type="text"
+              placeholder="ID"
+              name="employeeCode"
+              required
+              ngModel
+            />
+          </div>
+          <div class="display-flex">
+            <div class="w45">
+              <label for="">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                required
+                ngModel
+                placeholder="First Name"
+              />
+            </div>
+            <div class="w45 margin-left-10-pct">
+              <label for="">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                required
+                ngModel
+                placeholder="Last Name"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="">Job Title</label>
+            <input
+              type="text"
+              name="jobTitleName"
+              required
+              ngModel
+              placeholder="Job Title"
+            />
+          </div>
+          <div>
+            <label for="">Email</label>
+            <input
+              type="text"
+              name="emailAddress"
+              required
+              ngModel
+              placeholder="Email"
+            />
+          </div>
+          <div>
+            <label for="">Phone Number</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              required
+              ngModel
+              placeholder="Phone Number"
+            />
+          </div>
+          <div class="display-flex">
+            <div class="w45">
+              <label for="">Region</label>
+              <input
+                type="text"
+                name="region"
+                required
+                ngModel
+                placeholder="Region"
+              />
+            </div>
+            <div class="w45 margin-left-10-pct">
+              <label for="">DOB</label>
+              <input
+                type="date"
+                name="dob"
+                required
+                ngModel
+                placeholder="Date Of Birth"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="display-flex">
+          <input
+            type="submit"
+            class="w45 primary-button rounded-pill margin-top-30-px"
+            value="SUBMIT"
+            [disabled]="employee.form.invalid"
+          />
+          <button
+            class="w45 margin-left-10-pct secondary-button rounded-pill"
+            (click)="isAddEmployeePopup = false"
+          >
+            cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  id="popup popup-details"
+  class="overlay"
+  [ngClass]="{ 'overlay-show': isEmployeeDetailsPopup }"
+>
+  <div class="popup">
+    <h2>Employee Details</h2>
+    <a
+      class="close cur-pointer"
+      title="Close"
+      (click)="isEmployeeDetailsPopup = false"
+      >&times;</a
+    >
+    <div class="content form">
+      <form
+        class="login-form"
+        #employee="ngForm"
+        (ngSubmit)="submitEmployeeData(employee.value)"
+      >
+        <div class="form-user-content">
+          <div class="w50">
+            <label for="">ID</label>
+            <input
+              type="text"
+              placeholder="ID"
+              name="employeeCode"
+              [value]="employeDetails.employeeCode"
+              disabled="true;"
+            />
+          </div>
+          <div class="display-flex">
+            <div class="w45">
+              <label for="">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                [value]="employeDetails.firstName"
+                disabled="true"
+                placeholder="First Name"
+              />
+            </div>
+            <div class="w45 margin-left-10-pct">
+              <label for="">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                [value]="employeDetails.lastName"
+                disabled="true"
+                placeholder="Last Name"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="">Job Title</label>
+            <input
+              type="text"
+              name="jobTitleName"
+              [value]="employeDetails.jobTitleName"
+              disabled="true"
+              placeholder="Job Title"
+            />
+          </div>
+          <div>
+            <label for="">Email</label>
+            <input
+              type="text"
+              name="emailAddress"
+              [value]="employeDetails.emailAddress"
+              disabled="true"
+              placeholder="Email"
+            />
+          </div>
+          <div>
+            <label for="">Phone Number</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              [value]="employeDetails.phoneNumber"
+              disabled="true"
+              placeholder="Phone Number"
+            />
+          </div>
+          <div class="display-flex">
+            <div class="w45">
+              <label for="">Region</label>
+              <input
+                type="text"
+                name="region"
+                [value]="employeDetails.region"
+                disabled="true"
+                placeholder="Region"
+              />
+            </div>
+            <div class="w45 margin-left-10-pct">
+              <label for="">DOB</label>
+              <input
+                type="date"
+                name="dob"
+                [value]="employeDetails.dob"
+                disabled="true"
+                placeholder="Date Of Birth"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
